@@ -24,13 +24,19 @@ jobs:
       - name: Build app
         run: npm run build
 
-      - name: Deploy to Amplify
+      - name: Initialize or Pull Amplify Project
         run: |
-          set -e
           npm install -g @aws-amplify/cli@latest
           amplify configure --usage-data-off
-          amplify env checkout --environment myenv
-          amplify publish
+          # Check if Amplify project is already initialized, and if not, initialize it
+          if [ ! -d "amplify" ]; then
+            amplify init
+          else
+            amplify pull <app-id> # Replace <app-id> with your Amplify app ID
+          fi
+          
+      - name: Deploy to Amplify
+        run: amplify publish
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
