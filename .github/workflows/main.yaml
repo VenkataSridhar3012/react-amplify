@@ -24,7 +24,10 @@ jobs:
       - name: Build app
         run: npm run build
 
-      - name: Initialize or Deploy to Amplify
+      - name: Configure AWS region
+        run: aws configure set region us-east-1
+
+      - name: Deploy to Amplify
         run: |
           npm install -g @aws-amplify/cli@latest
           amplify configure --usage-data-off
