@@ -26,9 +26,10 @@ jobs:
 
       - name: Deploy to Amplify
         run: |
-          npm install -g @aws-amplify/cli
+          set -e
+          npm install -g @aws-amplify/cli@latest
           amplify configure --usage-data-off
-          amplify env checkout myenv
+          amplify env checkout --environment myenv
           amplify publish
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
